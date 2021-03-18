@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base target="_top" />
+    </head>
+
+    <body>
+        <form id="formInfo">
+            Form name:<br />
+            <input type="text" name="formName" value="" />
+            <br />
+            Members list sheet name:<br />
+            <input type="text" name="sheetName" value="" />
+            <br />
+            Member list start cell (A1):<br />
+            <input type="text" name="startCell" value="" />
+            <br />
+            Member list end cell (B1):<br />
+            <input type="text" name="endCell" value="" />
+            <br />
+            <input type="submit" value="submit" onclick="getCreateFormData()" />
+        </form>
+
+        <script>
+            function success(msg) {
+                alert(msg);
+            }
+
+            function getCreateFormData() {
+                var form = document.getElementById("formInfo").elements;
+                var data = {};
+                for (var i = 0; i < form.length; i++) {
+                    var item = form.item(i);
+                    data[item.name] = item.value;
+                }
+                google.script.run
+                    .withSuccessHandler(success)
+                    .getCreateFormData(data);
+                google.script.host.close()
+            }
+        </script>
+    </body>
+</html>
