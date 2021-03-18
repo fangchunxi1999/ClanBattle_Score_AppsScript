@@ -95,6 +95,7 @@ function setupFormAndSheet(
 
     form = setFormItems(form, items);
     form = setFormDestinationSheet(form, destSpreadsheet);
+    var formTrigger = addFormOnSubmitTrigger(form);
 
     SpreadsheetApp.flush();
     var destSheet = getFormDestinationSheet(form, destSpreadsheet);
@@ -109,6 +110,7 @@ function setupFormAndSheet(
         destSheet
     );
     setConfig("CURRENT_FORM_ID", form.getId());
+    setConfig("CURRENT_FORM_TRIGGER_ID", formTrigger.getUniqueId());
     setConfig("CURRENT_LINKED_SPREADSHEET_ID", form.getDestinationId());
     setConfig("CURRENT_LINKED_SHEET_ID", destSheet.getSheetId().toString());
 
