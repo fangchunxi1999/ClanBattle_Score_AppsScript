@@ -14,12 +14,12 @@ function setupFormAndSheet(
 
     var form = createForm(
         "[Clan Battle]" + formName,
-        "Form สำหรับกรอบคะแนน Clan Battle"
+        getConfig("FORM_DESCRIPTION")
     );
 
     var items: ItemData[] = [
         {
-            title: "เลือกชื่อ Member Clan",
+            title: getConfig("FORM_GET_MEMBER_NAME_TITLE"),
             type: FormApp.ItemType.LIST,
             option: {
                 choices: arrayToChoicesData(memberList),
@@ -27,7 +27,7 @@ function setupFormAndSheet(
             },
         },
         {
-            title: "เลือกบอสที่ตี",
+            title: getConfig("FORM_GET_BOSS_TITLE"),
             type: FormApp.ItemType.LIST,
             option: {
                 choices: arrayToChoicesData([1, 2, 3, 4, 5].map((i) => "" + i)),
@@ -35,7 +35,7 @@ function setupFormAndSheet(
             },
         },
         {
-            title: "เลือกรอบ",
+            title: getConfig("FORM_GET_TURN_TITLE"),
             type: FormApp.ItemType.LIST,
             option: {
                 choices: arrayToChoicesData(["1", "2+"].map((i) => "" + i)),
@@ -43,7 +43,7 @@ function setupFormAndSheet(
             },
         },
         {
-            title: "กรอกคะแนน",
+            title: getConfig("FORM_GET_SCORE_TITLE"),
             type: FormApp.ItemType.TEXT,
             option: {
                 textValidation: FormApp.createTextValidation()
@@ -53,7 +53,7 @@ function setupFormAndSheet(
             },
         },
         {
-            title: "มี Overflow ต่อไหม",
+            title: getConfig("FORM_GET_HAS_OVERFLOW_TITLE"),
             type: FormApp.ItemType.MULTIPLE_CHOICE,
             option: {
                 choices: [
@@ -72,14 +72,14 @@ function setupFormAndSheet(
             },
         },
         {
-            title: "ข้อมูล Overflow",
+            title: getConfig("FORM_PAGE_OVERFLOW_TITLE"),
             type: FormApp.ItemType.PAGE_BREAK,
             option: {
                 goToPage: FormApp.PageNavigationType.SUBMIT,
             },
         },
         {
-            title: "เวลาที่เหลือจาก Overflow",
+            title: getConfig("FORM_GET_OVERFLOW_TITLE"),
             type: FormApp.ItemType.TEXT,
             option: {
                 textValidation: FormApp.createTextValidation()
