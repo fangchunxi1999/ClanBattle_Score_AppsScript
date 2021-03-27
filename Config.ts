@@ -1,3 +1,12 @@
+function setupConfigSheet(
+    configSheet: GoogleAppsScript.Spreadsheet.Sheet,
+    configSheetName = "CONFIG",
+    row = 1,
+    column = 1
+) {
+    //TODO
+}
+
 function getKeys(): string[] {
     var docProps = PropertiesService.getDocumentProperties();
     return docProps.getKeys();
