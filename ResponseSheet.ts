@@ -16,11 +16,32 @@ function prepareFormLinkedSheet(
 function setCellsProperties(
     linkedSheet: GoogleAppsScript.Spreadsheet.Sheet
 ): GoogleAppsScript.Spreadsheet.Sheet {
-    var writeCells = linkedSheet.getRange("A5:A");
-    writeCells.setNumberFormat("yyyy/mm/dd hh:mm:ss");
-    var writeCells = linkedSheet.getRange("E5:E");
-    writeCells.setNumberFormat("#,##0");
+    var writeCells = linkedSheet.getRange("A5:E");
+    var formatInfos = [
+        {
+            format: 'yyyy"/"mm"/"dd" "hh":"mm":"ss',
+            col: 1,
+        },
+        {
+            format: "#,##0",
+            col: 5,
+        },
+    ];
+    setFormat(writeCells, formatInfos);
     return linkedSheet;
+}
+
+function setFormat(
+    range: GoogleAppsScript.Spreadsheet.Range,
+    formatInfos: { format: string; col: number }[]
+): GoogleAppsScript.Spreadsheet.Range {
+    var numberFormats = range.getNumberFormats();
+    for (let fInfo of formatInfos)
+        for (let r = 0; r < numberFormats.length; r++)
+            for (let c = 0; c < numberFormats[r].length; c++)
+                if (c + 1 == fInfo.col) numberFormats[r][c] = fInfo.format;
+
+    return range.setNumberFormats(numberFormats);
 }
 
 //TODO
