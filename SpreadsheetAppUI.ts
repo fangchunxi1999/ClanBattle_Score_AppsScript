@@ -5,6 +5,11 @@ function setupSpreadsheetAppUI() {
         .addSeparator()
         .addItem("Backup Config to CONFIG Sheet", "saveConfigsToSheetUI")
         .addItem("Load Config form CONFIG Sheet", "loadConfigsFormSheetUI")
+        .addSeparator()
+        .addItem(
+            "Delete old onFormSubmit Triggers",
+            "delOldOnFormSubmitTriggersUI"
+        )
         .addToUi();
 }
 
@@ -17,7 +22,7 @@ function createFormUI() {
     );
     if (result.getSelectedButton() == ui.Button.OK) {
         var formName = result.getResponseText().trim();
-        if (!formName) {
+        if (formName === "") {
             ui.alert("Please Input Form name!");
             return;
         }
@@ -39,4 +44,15 @@ function loadConfigsFormSheetUI() {
         "CONFIG"
     );
     loadConfigsFormSheet(configSheet);
+}
+
+function delOldOnFormSubmitTriggersUI() {
+    var configSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+        "CONFIG"
+    );
+    var currentTriggerID = getConfig(
+        "CURRENT_FORM_TRIGGER_ID",
+        configSheet.getRange("A1:B")
+    );
+    delOldOnFormSubmitTriggers(currentTriggerID);
 }
