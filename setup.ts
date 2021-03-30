@@ -12,11 +12,6 @@ function setupFormAndSheet(
         ).getRange()
     );
 
-    var form = createForm(
-        "[Clan Battle]" + formName,
-        getConfig("FORM_DESCRIPTION")
-    );
-
     var items: ItemData[] = [
         {
             title: getConfig("FORM_GET_MEMBER_NAME_TITLE"),
@@ -93,9 +88,13 @@ function setupFormAndSheet(
         },
     ];
 
+    var form = createForm(
+        "[Clan Battle]" + formName,
+        getConfig("FORM_DESCRIPTION")
+    );
+
     form = setFormItems(form, items);
     form = setFormDestinationSheet(form, destSpreadsheet);
-    var formTrigger = addFormOnSubmitTrigger(form);
 
     SpreadsheetApp.flush();
     var destSheet = getFormDestinationSheet(form, destSpreadsheet);
@@ -109,8 +108,52 @@ function setupFormAndSheet(
         },
         destSheet
     );
+    setCellsProperties(destSheet);
+
+    const titleRange = destSheet.getRange(
+        destSheet.getLastRow(),
+        1,
+        1,
+        destSheet.getLastColumn()
+    );
+    const titleInfos: TitleInfo[] = [
+        {
+            titleName: "DATETIME",
+            titleCol: 1,
+        },
+        {
+            titleName: "MEMBER",
+            titleDisplayStr: getConfig("FORM_GET_MEMBER_NAME_TITLE"),
+        },
+        {
+            titleName: "BOSS",
+            titleDisplayStr: getConfig("FORM_GET_BOSS_TITLE"),
+        },
+        {
+            titleName: "STATE",
+            titleDisplayStr: getConfig("FORM_GET_TURN_TITLE"),
+        },
+        {
+            titleName: "SCORE",
+            titleDisplayStr: getConfig("FORM_GET_SCORE_TITLE"),
+        },
+        {
+            titleName: "HAS_OVERFLOW",
+            titleDisplayStr: getConfig("FORM_GET_HAS_OVERFLOW_TITLE"),
+        },
+        {
+            titleName: "OVERFLOW_TIME",
+            titleDisplayStr: getConfig("FORM_GET_OVERFLOW_TITLE"),
+        },
+    ];
+    var titlesData = getTitle(titleRange.getValues(), titleInfos);
+    saveTitlesDataToConfig(titlesData);
+
     setConfig("CURRENT_FORM_ID", form.getId());
-    setConfig("CURRENT_FORM_TRIGGER_ID", formTrigger.getUniqueId());
+    if (!hasSheetOnSubmitTrigger()) {
+        var formTrigger = addSheetOnSubmitTrigger(destSpreadsheet);
+        setConfig("CURRENT_FORM_TRIGGER_ID", formTrigger.getUniqueId());
+    }
     setConfig("CURRENT_LINKED_SPREADSHEET_ID", form.getDestinationId());
     setConfig("CURRENT_LINKED_SHEET_ID", destSheet.getSheetId().toString());
 
